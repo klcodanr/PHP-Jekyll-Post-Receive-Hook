@@ -1,9 +1,4 @@
 <?php
-
-//error_reporting(E_ALL);
-ignore_user_abort(true);
-set_time_limit(0);
-
 function syscall ($cmd, $cwd) {
 	$descriptorspec = array(
 		1 => array('pipe', 'w') // stdout is a pipe that the child will write to
@@ -16,11 +11,20 @@ function syscall ($cmd, $cwd) {
 		return $output; 
 	}
 }
-
-// GitHub will hit us with POST (http://help.github.com/post-receive-hooks/)
 if (!empty($_POST['payload'])) {
+	
+	// read the global configuration
+	$config = json_decode(file_get_contents('config/global.json'));
+	
+	// set basic settings
+	ignore_user_abort(true);
+	set_time_limit($config->time_limit);
+	
+	// read the payload from GitHub
+	$payload = json_decode($_POST['payload']);
+	
+	// process the payload
 	try{
-
 		// pull from master
 		error_log("Running Git Pull");
 		$result = syscall('git pull', '/var/scratch/[site]');
