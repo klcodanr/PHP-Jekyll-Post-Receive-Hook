@@ -2,6 +2,7 @@
 
 //error_reporting(E_ALL);
 ignore_user_abort(true);
+set_time_limit(0);
 
 function syscall ($cmd, $cwd) {
 	$descriptorspec = array(
