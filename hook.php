@@ -23,8 +23,7 @@ function error($message){
 if (!empty($_POST['payload'])) {
 	
 	try {
-		// read the global configuration
-		$global_config = json_decode(file_get_contents('config.json'));
+		require('config.php');
 	} catch (Exception $e) {
 		error('Exception reading global configuration: ' . $e->getMessage());
 	}
