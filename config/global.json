@@ -1,6 +1,7 @@
 {
   time_limit: 0,
   jekyll_command: "/usr/bin/jekyll",
+  projects_root: "/opt/scratch",
   servers: [
     {
       url: 'https://github.com/user/repo',
