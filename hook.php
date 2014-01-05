@@ -25,7 +25,7 @@ if (!empty($_POST['payload'])) {
 	$config_str = file_get_contents('.config.json');
 	$global_config = json_decode($config_str, true);
 	if ($global_config == null){
-		error('Exception reading global configuration from : ' . $config_str;
+		error('Exception reading global configuration from : ' . $config_str);
 	}
 	
 	// set basic settings
