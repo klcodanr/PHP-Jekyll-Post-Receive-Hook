@@ -22,47 +22,47 @@ function error($message){
 }
 if (!empty($_POST['payload'])) {
 	
-	try {
-		require('config.php');
-	} catch (Exception $e) {
-		error('Exception reading global configuration: ' . $e->getMessage());
+	$config_str = file_get_contents('.config.json');
+	$global_config = json_decode($config_str, true);
+	if ($global_config == null){
+		error('Exception reading global configuration from : ' . $config_str;
 	}
 	
 	// set basic settings
 	ignore_user_abort(true);
-	set_time_limit($global_config->time_limit);
+	set_time_limit($global_config['time_limit']);
 	
 	// read the payload from GitHub
 	try{
-		$payload = json_decode($_POST['payload']);
+		$payload = json_decode($_POST['payload'], true);
 	} catch(Exception $e) {
 		error('Exception decoding GitHub JSON ' . $e->getMessage());
 	}
 	
 	// process the payload
-	$url = $payload->repository->url;
+	$url = $payload['repository']['url'];
 	info("Finding configuration for: $url");
 	
-	$config = $global_config->servers[$url];
+	$config = $global_config['servers'][$url];
 	if($config != null){
 		try {
-			info('Updating configuration ' . $config->id);
+			info('Updating configuration ' . $config['id']);
 			
-			$project_dir = $global_config . '/' . $config->id;
-			if($config->project_dir != null){
-				$project_dir = $config->project_dir;
+			$project_dir = $global_config . '/' . $config['id'];
+			if($config['project_dir'] != null){
+				$project_dir = $config['project_dir'];
 			}
 			
 			info('Updating GIT Repository');
-			info(syscall($global_config->git_path . ' pull', $project_dir));
+			info(syscall($global_config['git_path'] . ' pull', $project_dir));
 			
 			$jekyll_args = 'build';
-			if($config->jekyll_args != null){
-				$jekyll_args = $config->jekyll_args;
+			if($config['jekyll_args'] != null){
+				$jekyll_args = $config['jekyll_args'];
 			}
 			
 			info('Running Jekyll');
-			info(syscall($global_config->jekyll_path . ' ' . $jekyll_args), $project_dir);
+			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args), $project_dir);
 			
 			info("Update complete");
 		} catch(Exception $e) {
