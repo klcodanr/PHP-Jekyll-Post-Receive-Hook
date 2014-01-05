@@ -1,5 +1,5 @@
 {
-  limit: 0,
+  time_limit: 0,
   jekyll_command: "/usr/bin/jekyll",
   servers: [
     {
