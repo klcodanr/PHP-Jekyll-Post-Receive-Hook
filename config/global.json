@@ -2,10 +2,10 @@
   time_limit: 0,
   jekyll_command: "/usr/bin/jekyll",
   projects_root: "/opt/scratch",
-  servers: [
-    {
-      url: 'https://github.com/user/repo',
-      id: 'repo'
+  servers: {
+    'https://github.com/user/repo':{
+      id: repo,
+      jekyll_params: 'build -d /var/www/vhosts/repo'
     }
-  ]
+  }
 }
