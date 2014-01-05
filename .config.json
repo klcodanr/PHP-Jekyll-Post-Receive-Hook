@@ -4,9 +4,9 @@
   "git_path": "git",
   "projects_root": "/opt/scratch",
   "servers": {
-    'https://github.com/user/repo':{
-      "id": repo,
-      "jekyll_params": 'build -d /var/www/vhosts/repo'
+    "https://github.com/user/repo":{
+      "id": "repo",
+      "jekyll_params": "build -d /var/www/vhosts/repo"
     }
   }
 }
