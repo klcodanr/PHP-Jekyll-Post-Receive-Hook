@@ -43,7 +43,7 @@ if (!empty($_POST['payload'])) {
 	$url = $payload->repository->url;
 	info("Finding configuration for: $url");
 	
-	$config = $global_config->servers->$url;
+	$config = $global_config->servers[$url];
 	if($config != null){
 		try {
 			info('Updating configuration ' . $config->id);
