@@ -1,0 +1,10 @@
+{
+  limit: 0,
+  jekyll_command: "/usr/bin/jekyll",
+  servers: [
+    {
+      url: 'https://github.com/user/repo',
+      id: 'repo'
+    }
+  ]
+}
