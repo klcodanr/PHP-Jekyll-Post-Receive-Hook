@@ -31,7 +31,7 @@ if (!empty($_POST['payload'])) {
 	
 	// set basic settings
 	ignore_user_abort(true);
-	set_time_limit($config->time_limit);
+	set_time_limit($global_config->time_limit);
 	
 	// read the payload from GitHub
 	try{
