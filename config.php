@@ -1,3 +1,4 @@
+<?php
 $conf_str = <<<'EOD'
 {
   time_limit: 0,
@@ -13,3 +14,4 @@ $conf_str = <<<'EOD'
 }
 EOD;
 $global_config = json_decode($conf_str);
+?>
