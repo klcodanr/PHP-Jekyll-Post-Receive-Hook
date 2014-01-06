@@ -2,7 +2,7 @@
 function syscall ($cmd, $cwd) {
 	info("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
-		1 => array('pipe', 'w') // stdout
+		1 => array('pipe', 'w'), // stdout
 		2 => array('pipe', 'w') // stderr 
 	);
 	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd);
