@@ -62,7 +62,7 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Running Jekyll');
-			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args), $project_dir);
+			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
 			
 			info("Update complete");
 		} catch(Exception $e) {
