@@ -1,4 +1,8 @@
 <?php
+	
+$config_str = file_get_contents('.config.json');
+$global_config = json_decode($config_str, true);
+
 function syscall ($cmd, $cwd) {
 	debug("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
@@ -29,8 +33,6 @@ function error($message){
 }
 if (!empty($_POST['payload'])) {
 	
-	$config_str = file_get_contents('.config.json');
-	$global_config = json_decode($config_str, true);
 	if ($global_config == null){
 		error('Exception reading global configuration from : ' . $config_str);
 	}
