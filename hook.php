@@ -26,7 +26,7 @@ function error($message){
 }
 if (!empty($_POST['payload'])) {
 	
-	$config_str = file_get_contents('.config.json');
+	$config_str = file_get_contents('config.json');
 	$global_config = json_decode($config_str, true);
 	if ($global_config == null){
 		error('Exception reading global configuration from : ' . $config_str);
@@ -47,7 +47,7 @@ if (!empty($_POST['payload'])) {
 	$url = $payload['repository']['url'];
 	info("Finding configuration for: $url");
 	
-	$config = $global_config['servers'][$url];
+	$config = $global_config['sites'][$url];
 	if($config != null){
 		try {
 			info('Updating site ' . $config['id']);
@@ -67,6 +67,10 @@ if (!empty($_POST['payload'])) {
 			
 			info('Running Jekyll');
 			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
+			
+			for($config['additional_commands'] as $additional_command) {
+				info(syscall($additional_command, $project_dir));
+			}
 			
 			info("Update complete");
 		} catch(Exception $e) {

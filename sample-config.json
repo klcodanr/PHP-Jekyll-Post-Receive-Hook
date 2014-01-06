@@ -1,9 +1,9 @@
 {
   "time_limit": 0,
-  "jekyll_path": "/usr/bin/jekyll",
+  "jekyll_path": "/usr/local/bin/jekyll",
   "git_path": "git",
   "projects_root": "/var/scratch",
-  "servers": {
+  "sites": {
     "https://github.com/user/repo":{
       "id": "repo",
       "jekyll_args": "build -d /var/www/html"

@@ -1,4 +1,4 @@
 Order Allow,Deny
-<FilesMatch "^hook\.php$">
-Allow from all
+<FilesMatch "^[a-z\-]*config\.json$|\.htaccess|License|README.md)$">
+Deny from all
 </FilesMatch>
