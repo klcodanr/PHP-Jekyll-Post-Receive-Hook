@@ -49,7 +49,7 @@ if (!empty($_POST['payload'])) {
 		try {
 			info('Updating site ' . $config['id']);
 			
-			$project_dir = $global_config . '/' . $config['id'];
+			$project_dir = $global_config['projects_root'] . '/' . $config['id'];
 			if($config['project_dir'] != null){
 				$project_dir = $config['project_dir'];
 			}
