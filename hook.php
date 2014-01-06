@@ -42,7 +42,7 @@ if (!empty($_POST['payload'])) {
 	
 	// process the payload
 	$url = $payload['repository']['url'];
-	debug("Finding configuration for: $url");
+	info("Finding configuration for: $url");
 	
 	$config = $global_config['servers'][$url];
 	if($config != null){
