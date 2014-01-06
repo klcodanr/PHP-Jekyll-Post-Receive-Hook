@@ -68,7 +68,7 @@ if (!empty($_POST['payload'])) {
 			info('Running Jekyll');
 			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
 			
-			for($config['additional_commands'] as $additional_command) {
+			foreach($config['additional_commands'] as $additional_command) {
 				info(syscall($additional_command, $project_dir));
 			}
 			
