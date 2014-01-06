@@ -2,12 +2,15 @@
 function syscall ($cmd, $cwd) {
 	info("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
-		1 => array('pipe', 'w') // stdout is a pipe that the child will write to
+		1 => array('pipe', 'w') // stdout
+		2 => array('pipe', 'w') // stderr 
 	);
 	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd);
 	if (is_resource($resource)) {
 		$output = stream_get_contents($pipes[1]);
+		$output .= "\nErrors: " . stream_get_contents($pipes[2]);
 		fclose($pipes[1]);
+		fclose($pipes[2]);
 		proc_close($resource);
 		return $output; 
 	}
