@@ -1,4 +1,4 @@
 Order Allow,Deny
-<FilesMatch "^[a-z\-]*config\.json$|\.htaccess|License|README.md)$">
+<FilesMatch "(^[a-z\-]*config\.json$|\.htaccess|LICENSE|README\.md)">
 Deny from all
 </FilesMatch>
