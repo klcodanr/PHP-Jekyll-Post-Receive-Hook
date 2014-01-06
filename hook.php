@@ -53,7 +53,7 @@ if (!empty($_POST['payload'])) {
 			info('Updating site ' . $config['id']);
 			
 			$project_dir = $global_config['projects_root'] . '/' . $config['id'];
-			if($config['project_dir'] != null){
+			if(array_key_exists('project_dir', $config)){
 				$project_dir = $config['project_dir'];
 			}
 			
@@ -61,15 +61,17 @@ if (!empty($_POST['payload'])) {
 			info(syscall($global_config['git_path'] . ' pull', $project_dir));
 			
 			$jekyll_args = 'build';
-			if($config['jekyll_args'] != null){
+			if(array_key_exists('jekyll_args', $config)){
 				$jekyll_args = $config['jekyll_args'];
 			}
 			
 			info('Running Jekyll');
 			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
 			
-			foreach($config['additional_commands'] as $additional_command) {
-				info(syscall($additional_command, $project_dir));
+			if(array_key_exists('additional_commands', $config)) {
+				foreach($config['additional_commands'] as $additional_command) {
+					info(syscall($additional_command, $project_dir));
+				}
 			}
 			
 			info("Update complete");
