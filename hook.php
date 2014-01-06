@@ -1,10 +1,6 @@
 <?php
-	
-$config_str = file_get_contents('.config.json');
-$global_config = json_decode($config_str, true);
-
 function syscall ($cmd, $cwd) {
-	debug("Executing command $cmd in directory $cwd");
+	info("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
 		1 => array('pipe', 'w') // stdout is a pipe that the child will write to
 	);
@@ -14,12 +10,6 @@ function syscall ($cmd, $cwd) {
 		fclose($pipes[1]);
 		proc_close($resource);
 		return $output; 
-	}
-}
-function debug($message){
-	if($global_config['verbose'] == true){
-		$date = date('d.m.Y h:i:s'); 
-		error_log($date . ' - DEBUG - ' . $message);
 	}
 }
 function info($message){
@@ -33,6 +23,8 @@ function error($message){
 }
 if (!empty($_POST['payload'])) {
 	
+	$config_str = file_get_contents('.config.json');
+	$global_config = json_decode($config_str, true);
 	if ($global_config == null){
 		error('Exception reading global configuration from : ' . $config_str);
 	}
