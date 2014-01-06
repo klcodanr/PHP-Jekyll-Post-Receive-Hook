@@ -1,4 +1,7 @@
 <?php
+// Copyright (c) 2014 Daniel Klco and contributors
+// Released under the MIT License
+// http://opensource.org/licenses/MIT
 function syscall ($cmd, $cwd) {
 	info("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
