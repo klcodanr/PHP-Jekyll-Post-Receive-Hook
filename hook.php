@@ -16,12 +16,10 @@ function syscall ($cmd, $cwd) {
 	}
 }
 function info($message){
-	$date = date('d.m.Y h:i:s'); 
-	error_log($date . ' - INFO - ' . $message);
+	error_log($message);
 }
 function error($message){
-	$date = date('d.m.Y h:i:s'); 
-	error_log($date . ' - ERROR - ' . $message);
+	error_log($message);
 	exit($message);
 }
 if (!empty($_POST['payload'])) {
