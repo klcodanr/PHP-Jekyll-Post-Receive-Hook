@@ -17,7 +17,6 @@ function syscall ($cmd, $cwd) {
 		fclose($pipes[1]);
 		fclose($pipes[2]);
 		proc_close($resource);
-		echo($syserr);
 		if($syserr == ''){
 			return $sysout;
 		} else {
