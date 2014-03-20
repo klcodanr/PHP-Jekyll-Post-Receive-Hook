@@ -4,6 +4,7 @@
 // http://opensource.org/licenses/MIT
 function syscall ($cmd, $cwd, $env) {
 	info("Executing command $cmd in directory $cwd");
+	info("Environment variables $env");
 	$descriptorspec = array(
 		1 => array('pipe', 'w'), // stdout
 		2 => array('pipe', 'w') // stderr 
