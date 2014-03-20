@@ -10,13 +10,20 @@ function syscall ($cmd, $cwd) {
 	);
 	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd);
 	if (is_resource($resource)) {
-		$output = stream_get_contents($pipes[1]);
-		$output .= "\nErrors: " . stream_get_contents($pipes[2]);
+		$sysout = stream_get_contents($pipes[1]);
+		info("Output: $sysout");
+		$syserr = stream_get_contents($pipes[2]);
+		info("Error: $sysout");
 		fclose($pipes[1]);
 		fclose($pipes[2]);
 		proc_close($resource);
-		return $output; 
+		if($syserr == ''){
+			return $sysout;
+		} else {
+			throw new Exception("Error calling command '$cmd' in directory '$cwd': $syserr");
+		}
 	}
+	throw new Exception("Invalid system call $cmd in directory $cwd");
 }
 function info($message){
 	error_log($message);
@@ -53,13 +60,19 @@ if (!empty($_POST['payload'])) {
 		try {
 			info('Updating site ' . $config['id']);
 			
+			$env = array();
+			if(array_key_exists('env', $global_config)){
+				$env = $global_config['env'];
+			}
+			
 			$project_dir = $global_config['projects_root'] . '/' . $config['id'];
 			if(array_key_exists('project_dir', $config)){
 				$project_dir = $config['project_dir'];
 			}
 			
 			info('Updating GIT Repository');
-			info(syscall($global_config['git_path'] . ' pull', $project_dir));
+			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $evn));
+			
 			
 			$jekyll_args = 'build';
 			if(array_key_exists('jekyll_args', $config)){
@@ -67,11 +80,11 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Running Jekyll');
-			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
+			echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env));
 			
 			if(array_key_exists('additional_commands', $config)) {
 				foreach($config['additional_commands'] as $additional_command) {
-					info(syscall($additional_command, $project_dir));
+					info(syscall($additional_command, $project_dir, $env));
 				}
 			}
 			
