@@ -30,7 +30,7 @@ function info($message){
 }
 function error($message){
 	error_log($message);
-	exit($message);
+	header("X-Error-Message: $message", true, 500);
 }
 if (!empty($_POST['payload'])) {
 	
