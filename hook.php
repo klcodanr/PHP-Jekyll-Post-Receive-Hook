@@ -13,7 +13,7 @@ function syscall ($cmd, $cwd, $env) {
 		$sysout = stream_get_contents($pipes[1]);
 		info("Output: $sysout");
 		$syserr = stream_get_contents($pipes[2]);
-		info("Error: $sysout");
+		info("Error: $syserr");
 		fclose($pipes[1]);
 		fclose($pipes[2]);
 		proc_close($resource);
