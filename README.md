@@ -41,7 +41,7 @@ the file is as follows:
 	{
 	  "env": {
 	    "rvm_path": "/usr/local/rvm",
-	  }
+	  },
 	  "git_path": "git",
 	  "jekyll_path": "/usr/local/bin/jekyll",
 	  "projects_root": "/var/scratch",
