@@ -1,12 +1,15 @@
 {
-  "time_limit": 0,
-  "jekyll_path": "/usr/local/bin/jekyll",
+  "env": {
+    "rvm_path":"/usr/local/rvm"
+  }
   "git_path": "git",
+  "jekyll_path": "/usr/local/bin/jekyll",
   "projects_root": "/var/scratch",
   "sites": {
     "https://github.com/user/repo":{
       "id": "repo",
       "jekyll_args": "build -d /var/www/html"
     }
-  }
+  },
+  "time_limit": 0
 }
