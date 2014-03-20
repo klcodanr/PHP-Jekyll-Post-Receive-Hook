@@ -30,7 +30,8 @@ function info($message){
 }
 function error($message){
 	error_log($message);
-	header("X-Error-Message: $message", true, 500);
+	header("X-Error-Message: Unable to update site", true, 500);
+	echo($message);
 }
 if (!empty($_POST['payload'])) {
 	
