@@ -2,13 +2,13 @@
 // Copyright (c) 2014 Daniel Klco and contributors
 // Released under the MIT License
 // http://opensource.org/licenses/MIT
-function syscall ($cmd, $cwd) {
+function syscall ($cmd, $cwd, $env) {
 	info("Executing command $cmd in directory $cwd");
 	$descriptorspec = array(
 		1 => array('pipe', 'w'), // stdout
 		2 => array('pipe', 'w') // stderr 
 	);
-	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd);
+	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
 	if (is_resource($resource)) {
 		$sysout = stream_get_contents($pipes[1]);
 		info("Output: $sysout");
@@ -72,7 +72,7 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Updating GIT Repository');
-			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $evn));
+			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env));
 			
 			
 			$jekyll_args = 'build';
