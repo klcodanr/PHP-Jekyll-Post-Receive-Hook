@@ -91,7 +91,7 @@ if (!empty($_POST['payload'])) {
 			
 			info("Update complete");
 		} catch(Exception $e) {
-			error('Exception updating target site: ' . $e.getMessage());
+			error('Exception updating target site: ' . $e->getMessage());
 		}
 	} else {
 		error("No configuration found for $url");
