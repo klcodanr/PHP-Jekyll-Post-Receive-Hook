@@ -2,7 +2,7 @@
 // Copyright (c) 2014 Daniel Klco and contributors
 // Released under the MIT License
 // http://opensource.org/licenses/MIT
-function syscall ($cmd, $cwd, $env) {
+function syscall ($cmd, $cwd, $env, $failOnErr) {
 	info("Executing command $cmd in directory $cwd");
 	info("Environment variables: ".print_r($env, true));
 	$descriptorspec = array(
@@ -18,8 +18,8 @@ function syscall ($cmd, $cwd, $env) {
 		fclose($pipes[1]);
 		fclose($pipes[2]);
 		proc_close($resource);
-		if($syserr == ''){
-			return $sysout;
+		if($syserr == '' || !$failOnErr){
+			return $sysout.' Error: '.$syserr;
 		} else {
 			throw new Exception("Error calling command '$cmd' in directory '$cwd': $syserr");
 		}
@@ -73,7 +73,7 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Updating GIT Repository');
-			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env));
+			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env, false));
 			
 			
 			$jekyll_args = 'build';
@@ -82,7 +82,7 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Running Jekyll');
-			echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env));
+			echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env, true));
 			
 			if(array_key_exists('additional_commands', $config)) {
 				foreach($config['additional_commands'] as $additional_command) {
