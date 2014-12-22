@@ -1,26 +1,38 @@
 <?php
-function syscall ($cmd, $cwd) {
+// Copyright (c) 2014 Daniel Klco and contributors
+// Released under the MIT License
+// http://opensource.org/licenses/MIT
+function syscall ($cmd, $cwd, $env, $failOnErr) {
 	info("Executing command $cmd in directory $cwd");
+	info("Environment variables: ".print_r($env, true));
 	$descriptorspec = array(
 		1 => array('pipe', 'w'), // stdout
 		2 => array('pipe', 'w') // stderr 
 	);
-	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd);
+	$resource = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
 	if (is_resource($resource)) {
-		$output = stream_get_contents($pipes[1]);
-		$output .= "\nErrors: " . stream_get_contents($pipes[2]);
+		$sysout = stream_get_contents($pipes[1]);
+		info("Output: $sysout");
+		$syserr = stream_get_contents($pipes[2]);
+		info("Error: $syserr");
 		fclose($pipes[1]);
 		fclose($pipes[2]);
 		proc_close($resource);
-		return $output; 
+		if($syserr == '' || !$failOnErr){
+			return $sysout.' Error: '.$syserr;
+		} else {
+			throw new Exception("Error calling command '$cmd' in directory '$cwd': $syserr");
+		}
 	}
+	throw new Exception("Invalid system call $cmd in directory $cwd");
 }
 function info($message){
 	error_log($message);
 }
 function error($message){
 	error_log($message);
-	exit($message);
+	header("X-Error-Message: Unable to update site", true, 500);
+	echo($message);
 }
 if (!empty($_POST['payload'])) {
 	
@@ -50,13 +62,19 @@ if (!empty($_POST['payload'])) {
 		try {
 			info('Updating site ' . $config['id']);
 			
+			$env = array();
+			if(array_key_exists('env', $global_config)){
+				$env = $global_config['env'];
+			}
+			
 			$project_dir = $global_config['projects_root'] . '/' . $config['id'];
 			if(array_key_exists('project_dir', $config)){
 				$project_dir = $config['project_dir'];
 			}
 			
 			info('Updating GIT Repository');
-			info(syscall($global_config['git_path'] . ' pull', $project_dir));
+			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env, false));
+			
 			
 			$jekyll_args = 'build';
 			if(array_key_exists('jekyll_args', $config)){
@@ -64,17 +82,17 @@ if (!empty($_POST['payload'])) {
 			}
 			
 			info('Running Jekyll');
-			info(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir));
+			echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env, true));
 			
 			if(array_key_exists('additional_commands', $config)) {
 				foreach($config['additional_commands'] as $additional_command) {
-					info(syscall($additional_command, $project_dir));
+					info(syscall($additional_command, $project_dir, $env));
 				}
 			}
 			
 			info("Update complete");
 		} catch(Exception $e) {
-			error('Exception updating target site: ' . $e.getMessage());
+			error('Exception updating target site: ' . $e->getMessage());
 		}
 	} else {
 		error("No configuration found for $url");

@@ -39,9 +39,11 @@ The config.json file is used to configure the PHP Jekyll Post Receive Hook.  The
 the file is as follows:
 
 	{
-	  "time_limit": 0,
-	  "jekyll_path": "/usr/local/bin/jekyll",
+	  "env": {
+	    "rvm_path": "/usr/local/rvm",
+	  },
 	  "git_path": "git",
+	  "jekyll_path": "/usr/local/bin/jekyll",
 	  "projects_root": "/var/scratch",
 	  "sites": {
 	    "https://github.com/user/repo":{
@@ -53,18 +55,20 @@ the file is as follows:
 	      	"ps -ef | grep ruby"
 	      ]
 	    }
-	  }
+	  },
+	  "time_limit": 0
 	}
 	
 These settings mean:
 
-* **time_limit** - The limit for the PHP script to run, generally 0 or a very large number
-* **jekyll_path** - The path to the Jekyll executable, often `/usr/local/bin/jekyll`
+* **env** - Environment variables to pass when calling the system commands
 * **git_path** - The path to the git executable, generally should be in the path
+* **jekyll_path** - The path to the Jekyll executable, often `/usr/local/bin/jekyll`
 * **projects_root** - The root path for the projects folder.  If a site does not have a 
     path set, the path for the project for that site will be {projects_root}/{site.id}
 * **sites** - Holds all of the sites configurations, each site configuration is keyed by 
     site's GitHub repository URL
+* **time_limit** - The limit for the PHP script to run, generally 0 or a very large number
     
 Each site can have the following settings:
 
