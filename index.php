@@ -1,5 +1,5 @@
 <form method="POST" action="/hook.php">
-	<textarea name="payload>
+	<textarea name="payload">
 	{ 
 	  "repository": {
 	    "url": ""
