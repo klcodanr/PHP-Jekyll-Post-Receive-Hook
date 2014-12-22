@@ -79,5 +79,7 @@ if (!empty($_POST['payload'])) {
 	} else {
 		error("No configuration found for $url");
 	}
+} else {
+	error("No payload specified!");
 }
 ?>
