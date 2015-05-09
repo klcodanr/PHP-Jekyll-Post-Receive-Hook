@@ -1,7 +1,7 @@
 {
   "env": {
     "rvm_path":"/usr/local/rvm"
-  }
+  },
   "git_path": "git",
   "jekyll_path": "/usr/local/bin/jekyll",
   "projects_root": "/var/scratch",
@@ -9,6 +9,7 @@
     "https://github.com/user/repo":{
       "id": "repo",
       "jekyll_args": "build -d /var/www/html"
+      "ref": "refs/heads/master"
     }
   },
   "time_limit": 0
