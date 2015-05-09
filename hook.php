@@ -96,7 +96,7 @@ if (!empty($_POST['payload'])) {
 			error('Exception updating target site: ' . $e->getMessage());
 		}
 	} else {
-		error("No configuration found for $url");
+		error("No configuration found for $url and ref $ref");
 	}
 } else {
 	error("No payload specified!");
