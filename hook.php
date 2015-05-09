@@ -55,10 +55,11 @@ if (!empty($_POST['payload'])) {
 	
 	// process the payload
 	$url = $payload['repository']['url'];
+	$ref = $payload['ref'];
 	info("Finding configuration for: $url");
 	
 	$config = $global_config['sites'][$url];
-	if($config != null){
+	if($config != null && ($config['ref'] == null || $config['ref'] === $ref)){
 		try {
 			info('Updating site ' . $config['id']);
 			
