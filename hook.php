@@ -29,9 +29,9 @@ function syscall ($cmd, $cwd, $env, $failOnErr) {
 function info($message){
 	error_log($message);
 }
-function error($message){
+function error($message, $code){
 	error_log($message);
-	header("X-Error-Message: Unable to update site", true, 500);
+	header("X-Error-Message: Unable to update site", true, $code);
 	echo($message);
 }
 if (!empty($_POST['payload'])) {
@@ -39,7 +39,7 @@ if (!empty($_POST['payload'])) {
 	$config_str = file_get_contents('config.json');
 	$global_config = json_decode($config_str, true);
 	if ($global_config == null){
-		error('Exception reading global configuration from : ' . $config_str);
+		error('Exception reading global configuration from : ' . $config_str, 500);
 	}
 	
 	// set basic settings
@@ -52,7 +52,7 @@ if (!empty($_POST['payload'])) {
 	try{
 		$payload = json_decode($_POST['payload'], true);
 	} catch(Exception $e) {
-		error('Exception decoding GitHub JSON ' . $e->getMessage());
+		error('Exception decoding GitHub JSON ' . $e->getMessage(), 400);
 	}
 	
 	// process the payload
@@ -95,12 +95,12 @@ if (!empty($_POST['payload'])) {
 			
 			info("Update complete");
 		} catch(Exception $e) {
-			error('Exception updating target site: ' . $e->getMessage());
+			error('Exception updating target site: ' . $e->getMessage(), 500);
 		}
 	} else {
-		error("No configuration found for $url and ref $ref");
+		error("No configuration found for $url and ref $ref", 404);
 	}
 } else {
-	error("No payload specified!");
+	error("No payload specified!", 400);
 }
 ?>
