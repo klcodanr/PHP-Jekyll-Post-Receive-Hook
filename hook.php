@@ -61,7 +61,7 @@ if (!empty($_POST['payload'])) {
 	info("Finding configuration for: $url");
 	
 	$config = $global_config['sites'][$url];
-	if($config != null && (array_key_exists('ref',$config) || $config['ref'] === $ref)){
+	if($config != null && (!array_key_exists('ref',$config) || $config['ref'] === $ref)){
 		try {
 			info('Updating site ' . $config['id']);
 			
