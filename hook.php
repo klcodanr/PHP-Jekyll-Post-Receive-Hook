@@ -44,7 +44,9 @@ if (!empty($_POST['payload'])) {
 	
 	// set basic settings
 	ignore_user_abort(true);
-	set_time_limit($global_config['time_limit']);
+	if(array_key_exists('time_limit',$global_config)){
+		set_time_limit($global_config['time_limit']);
+	}
 	
 	// read the payload from GitHub
 	try{
@@ -59,7 +61,7 @@ if (!empty($_POST['payload'])) {
 	info("Finding configuration for: $url");
 	
 	$config = $global_config['sites'][$url];
-	if($config != null && ($config['ref'] == null || $config['ref'] === $ref)){
+	if($config != null && (array_key_exists('ref',$config) || $config['ref'] === $ref)){
 		try {
 			info('Updating site ' . $config['id']);
 			
