@@ -98,7 +98,7 @@ if (!empty($_POST['payload'])) {
 			} catch(Exception $e) {
 				error('Exception updating target site: ' . $e->getMessage(), 500);
 			}
-	=	}
+		}
 	}
 } else {
 	error("No payload specified!", 400);
