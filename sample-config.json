@@ -5,12 +5,13 @@
   "git_path": "git",
   "jekyll_path": "/usr/local/bin/jekyll",
   "projects_root": "/var/scratch",
-  "sites": {
-    "https://github.com/user/repo":{
+  "sites": [
+  	{
+      "url": "https://github.com/user/repo",
       "id": "repo",
       "jekyll_args": "build -d /var/www/html",
       "ref": "refs/heads/master"
     }
-  },
+  ],
   "time_limit": 0
 }

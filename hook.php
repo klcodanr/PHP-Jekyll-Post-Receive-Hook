@@ -60,45 +60,45 @@ if (!empty($_POST['payload'])) {
 	$ref = $payload['ref'];
 	info("Finding configuration for: $url");
 	
-	$config = $global_config['sites'][$url];
-	if($config != null && (!array_key_exists('ref',$config) || $config['ref'] === $ref)){
-		try {
-			info('Updating site ' . $config['id']);
+	
+	foreach ($global_config['sites'] as $config) {
+		if($config['url'] === $url && (!array_key_exists('ref',$config) || $config['ref'] === $ref)){
+			try {
+				info('Updating site ' . $config['id']);
 			
-			$env = array();
-			if(array_key_exists('env', $global_config)){
-				$env = $global_config['env'];
-			}
-			
-			$project_dir = $global_config['projects_root'] . '/' . $config['id'];
-			if(array_key_exists('project_dir', $config)){
-				$project_dir = $config['project_dir'];
-			}
-			
-			info('Updating GIT Repository');
-			echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env, false));
-			
-			
-			$jekyll_args = 'build';
-			if(array_key_exists('jekyll_args', $config)){
-				$jekyll_args = $config['jekyll_args'];
-			}
-			
-			info('Running Jekyll');
-			echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env, true));
-			
-			if(array_key_exists('additional_commands', $config)) {
-				foreach($config['additional_commands'] as $additional_command) {
-					info(syscall($additional_command, $project_dir, $env));
+				$env = array();
+				if(array_key_exists('env', $global_config)){
+					$env = $global_config['env'];
 				}
-			}
 			
-			info("Update complete");
-		} catch(Exception $e) {
-			error('Exception updating target site: ' . $e->getMessage(), 500);
-		}
-	} else {
-		error("No configuration found for $url and ref $ref", 404);
+				$project_dir = $global_config['projects_root'] . '/' . $config['id'];
+				if(array_key_exists('project_dir', $config)){
+					$project_dir = $config['project_dir'];
+				}
+			
+				info('Updating GIT Repository');
+				echo(syscall($global_config['git_path'] . ' pull', $project_dir, $env, false));
+			
+			
+				$jekyll_args = 'build';
+				if(array_key_exists('jekyll_args', $config)){
+					$jekyll_args = $config['jekyll_args'];
+				}
+			
+				info('Running Jekyll');
+				echo(syscall($global_config['jekyll_path'] . ' ' . $jekyll_args, $project_dir, $env, true));
+			
+				if(array_key_exists('additional_commands', $config)) {
+					foreach($config['additional_commands'] as $additional_command) {
+						info(syscall($additional_command, $project_dir, $env));
+					}
+				}
+			
+				info("Update complete");
+			} catch(Exception $e) {
+				error('Exception updating target site: ' . $e->getMessage(), 500);
+			}
+	=	}
 	}
 } else {
 	error("No payload specified!", 400);
