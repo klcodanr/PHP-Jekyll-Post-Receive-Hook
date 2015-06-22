@@ -90,7 +90,8 @@ if (!empty($_POST['payload'])) {
 			
 				if(array_key_exists('additional_commands', $config)) {
 					foreach($config['additional_commands'] as $additional_command) {
-						info(syscall($additional_command, $project_dir, $env, true));
+						info("Running command $additional_command");
+						echo(syscall($additional_command, $project_dir, $env, true));
 					}
 				}
 			
